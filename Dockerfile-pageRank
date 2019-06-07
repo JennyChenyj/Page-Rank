@@ -1,0 +1,23 @@
+FROM ubuntu:14.04
+
+WORKDIR /root
+
+RUN wget http://apache.mirrors.tds.net/hadoop/common/hadoop-2.8.1/hadoop-2.8.1.tar.gz && \
+  tar -xzf hadoop-2.8.1.tar.gz && mv hadoop-2.8.1 $HADOOP_HOME
+
+ENV JAVA_HOME = /usr/lib/jvm/java-8-openjdk
+ENV HADOOP_HOME = /usr/local/hadoop
+ENV PATH $PATH:$HADOOP_HOME/bin:/usr/local/hadoop/sbin
+
+RUN apt-get update && apt-get install -y openssh-server
+RUN apt-get install openjdk-8-jdk 
+RUN apt-get install wget
+
+ADD core-site.xml $HADOOP_HOME/etc/hadoop/core-site.xml
+ADD hdfs-site.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+ADD core-site.xml $HADOOP_HOME/etc/hadoop/core-site.xml 
+ADD mapred-site.xml $HADOOP_HOME/etc/hadoop/mapred-site.xml 
+ADD tmp/yarn-site.xml $HADOOP_HOME/etc/hadoop/yarn-site.xml
+ADD run-pageRank.sh ~/run-pageRank.sh
+
+RUN sed -i "/^export JAVA_HOME/ s:.*:export JAVA_HOME=/user/java PATH=${JAVA_HOME}/bin:${PATH} HADOOP_HOME=${HADOOP_HOME}/EXPORT ~/.hadoop-setup.sh
