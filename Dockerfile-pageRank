@@ -2,11 +2,12 @@ FROM ubuntu:14.04
 
 WORKDIR /root
 
+ENV HADOOP_HOME = /usr/local/hadoop
+
 RUN wget http://apache.mirrors.tds.net/hadoop/common/hadoop-2.8.1/hadoop-2.8.1.tar.gz && \
-  tar -xzf hadoop-2.8.1.tar.gz && mv hadoop-2.8.1 $HADOOP_HOME
+  tar -xzf hadoop-2.8.1.tar.gz && mv hadoop-2.8.1 $HADOOP_HOME && rm hadoop-2.8.1.tar.gz
 
 ENV JAVA_HOME = /usr/lib/jvm/java-8-openjdk
-ENV HADOOP_HOME = /usr/local/hadoop
 ENV PATH $PATH:$HADOOP_HOME/bin:/usr/local/hadoop/sbin
 
 RUN apt-get update && apt-get install -y openssh-server
